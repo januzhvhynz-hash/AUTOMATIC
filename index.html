@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Email Code Generator with Discord Lookup</title>
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Google Sans', Roboto, Helvetica, Arial, sans-serif; padding: 40px 20px 100px 20px; background: #f6f8fc; margin: 0;">
+
+    <!-- 1. LIVE VISUAL PREVIEW -->
+    <div style="margin-bottom: 30px;">
+        <div id="output"></div>
+    </div>
+
+    <!-- 2. CENTERED CONTAINER FOR INPUTS AND THE TITLE -->
+    <div style="display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; text-align: center; margin-top: 150px; padding-bottom: 50px;">
+        
+        <!-- COMPACT SINGLE COLUMN INPUTS -->
+        <div style="width: 320px; background: #eaeaea; padding: 15px; border-radius: 8px; flex-shrink: 0; text-align: left;">
+            
+            <div style="margin-bottom: 10px;">
+                <label for="displayNameInput" style="font-size: 11px; color: #444; display: block; margin-bottom: 3px; font-weight: bold;">USER DISPLAY NAME:</label>
+                <input type="text" id="displayNameInput" placeholder="Enter display name..." style="width: 100%; padding: 6px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="margin-bottom: 10px;">
+                <label for="usernameInput" style="font-size: 11px; color: #444; display: block; margin-bottom: 3px; font-weight: bold;">USERNAME:</label>
+                <input type="text" id="usernameInput" placeholder="Enter username..." style="width: 100%; padding: 6px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="margin-bottom: 10px;">
+                <label for="userIdInput" style="font-size: 11px; color: #444; display: block; margin-bottom: 3px; font-weight: bold;">USER ID:</label>
+                <input type="text" id="userIdInput" placeholder="Enter user ID..." style="width: 100%; padding: 6px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="margin-bottom: 10px;">
+                <label for="picLinkInput" style="font-size: 11px; color: #444; display: block; margin-bottom: 3px; font-weight: bold;">PICTURE LINK:</label>
+                <input type="text" id="picLinkInput" placeholder="Paste image link here..." style="width: 100%; padding: 6px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="margin-bottom: 10px;">
+                <label for="quickEdit" style="font-size: 11px; color: #444; display: block; margin-bottom: 3px; font-weight: bold;">ADMIN USER ID:</label>
+                <input type="text" id="quickEdit" placeholder="Type here..." style="width: 100%; padding: 6px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="margin-bottom: 0;">
+                <label for="secondInput" style="font-size: 11px; color: #444; display: block; margin-bottom: 3px; font-weight: bold;">ADMIN DISCORD NAME:</label>
+                <input type="text" id="secondInput" placeholder="Edit part 2..." style="width: 100%; padding: 6px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+        </div>
+
+        <!-- CENTERED TITLE & SUBTITLE BLOCK WITH CIRCULAR LOGO -->
+        <div style="max-width: 480px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+            
+            <!-- CIRCULAR LOGO -->
+            <div style="width: 90px; height: 90px; border-radius: 50%; overflow: hidden; border: 3px solid #ff69b4; box-shadow: 0 4px 8px rgba(0,0,0,0.15); margin-bottom: 14px; background: #fff;">
+                <img src="https://media.tenor.com/LIDGYRI2E2QAAAAe/chicken-on-rice.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+
+            <!-- Ticket Maker in SF Pro -->
+            <h1 style="font-size: 38px; font-weight: 700; color: #ff69b4; line-height: 1.1; margin: 0 0 6px 0; text-transform: uppercase; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif; letter-spacing: -0.5px;">
+                TICKET MAKER V2
+            </h1>
+            <div style="font-size: 14px; font-weight: 500; color: #ff69b4; margin-bottom: 16px; text-transform: lowercase; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;">
+                by masterkonams
+            </div>
+            <!-- Tuhik text in ITC Serif Gothic Heavy Style -->
+            <div style="font-size: 34px; font-weight: 900; color: #000000; line-height: 1.2; text-transform: uppercase; font-family: 'ITC Serif Gothic', 'Serif Gothic', 'Times New Roman', serif; letter-spacing: 0.5px;">
+                "KAWAT NA MGA KUNGKANG!"
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 3. DISCORD ID LOOKUP EMBED WIDGET -->
+    <div style="max-width: 860px; margin: 40px auto 0 auto; background: #131722; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: 1px solid #232a3b;">
+        <h3 style="color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin-top: 0; margin-bottom: 15px; font-size: 18px; text-align: left;">Discord ID Lookup</h3>
+        
+        <!-- Search bar container -->
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <input type="text" id="lookupIdInput" placeholder="Enter Discord User ID (e.g., 822825502615535647)" style="flex-grow: 1; padding: 12px 15px; background: #1a202c; border: 1px solid #2d3748; color: #ffffff; border-radius: 6px; font-size: 14px; outline: none;">
+            <button onclick="triggerLookup()" style="background: #5865F2; color: white; border: none; padding: 0 20px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 14px; transition: background 0.2s;">Lookup ID</button>
+        </div>
+
+        <!-- Lookup Result Display Box -->
+        <div id="lookupResultContainer" style="display: none; background: #1a202c; border: 1px solid #2d3748; border-radius: 8px; padding: 25px; text-align: center; color: #fff;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                <div style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; background: #2d3748; border: 2px solid #5865F2;">
+                    <img id="lookupAvatar" src="" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div>
+                    <div id="lookupUsername" style="font-size: 20px; font-weight: bold; color: #ffffff; margin-bottom: 4px;">@username</div>
+                    <div id="lookupBio" style="font-size: 13px; color: #a0aec0; margin-bottom: 8px;">No public bio or details found.</div>
+                    <div style="font-size: 12px; color: #718096;">User ID: <span id="lookupIdDisplay" style="color: #63b3ed; background: #2d3748; padding: 2px 6px; border-radius: 4px;"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    let baseTemplate = `
+        <!-- SINGLE CONTINUOUS FULL-WIDTH GMAIL READING PANE -->
+        <table style="width: 100%; background: #ffffff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 12px 24px 12px 24px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+                <!-- GMAIL TOP ACTION TOOLBAR -->
+                <tr>
+                    <td style="padding-bottom: 16px; border-bottom: 1px solid #f1f3f4;">
+                        <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                            <tbody>
+                                <tr>
+                                    <td style="vertical-align: middle; color: #5f6368; font-size: 0px;">
+                                        <!-- Back Arrow -->
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle;" title="Back">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                                        </span>
+                                        <!-- Archive -->
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle; margin-left: 2px;" title="Archive">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.15.55L3.46 5.23C3.17 5.57 3 6.01 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.49-.17-.93-.46-1.27zM6.24 5h11.52l.83 1H5.41l.83-1zM5 19V8h14v11H5zm8-10v3h3l-4 4-4-4h3V9z"/></svg>
+                                        </span>
+                                        <!-- Report Spam -->
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle; margin-left: 2px;" title="Report spam">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M15.73 3H8.27L3 8.27v7.46L8.27 21h7.46L21 15.73V8.27L15.73 3zM19 14.9L14.9 19H9.1L5 14.9V9.1L9.1 5h5.8L19 9.1v5.8zM11 15h2v2h-2zm0-8h2v6h-2z"/></svg>
+                                        </span>
+                                        <!-- Delete -->
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle; margin-left: 2px;" title="Delete">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                                        </span>
+                                        <!-- Mark as Unread -->
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle; margin-left: 2px;" title="Mark as unread">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                                        </span>
+                                        <!-- Snooze -->
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle; margin-left: 2px;" title="Snooze">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                                        </span>
+                                        <!-- Divider line -->
+                                        <span style="display: inline-block; width: 1px; height: 18px; background-color: #dadce0; vertical-align: middle; margin: 0 6px;"></span>
+                                        <!-- Move to -->
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle;" title="Move to">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+                                        </span>
+                                        <!-- Labels -->
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle; margin-left: 2px;" title="Labels">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16zM16 17H5V7h11l3.55 5L16 17z"/></svg>
+                                        </span>
+                                        <!-- More options -->
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle; margin-left: 2px;" title="More">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                                        </span>
+                                    </td>
+                                    <td style="text-align: right; vertical-align: middle; color: #5f6368; font-size: 12px; white-space: nowrap;">
+                                        <span style="margin-right: 16px; vertical-align: middle;">47 of 146</span>
+                                        <!-- Newer Arrow -->
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle;" title="Newer">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                                        </span>
+                                        <!-- Older Arrow -->
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle;" title="Older">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <!-- GMAIL SUBJECT & TOP RIGHT ICONS -->
+                <tr>
+                    <td style="padding-top: 16px; padding-bottom: 12px; padding-left: 44px;">
+                        <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                            <tbody>
+                                <tr>
+                                    <td style="vertical-align: middle;">
+                                        <span style="font-size: 20px; color: #222222; font-weight: 400; line-height: 24px; vertical-align: middle; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">Account Cool - Request # 23871020</span>
+                                        <span style="background-color: #f1f3f4; color: #3c4043; font-size: 11px; padding: 2px 7px; border-radius: 4px; font-weight: 400; margin-left: 8px; vertical-align: middle; display: inline-block; border: 1px solid #dadce0; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">Inbox ×</span>
+                                    </td>
+                                    <td style="text-align: right; vertical-align: middle; white-space: nowrap; color: #5f6368; font-size: 0px;">
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle; margin-left: 8px;" title="Collapse/Expand">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>
+                                        </span>
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle; margin-left: 8px;" title="Print">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+                                        </span>
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle; margin-left: 8px;" title="Pop out">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <!-- GMAIL SENDER INFO & BOTTOM RIGHT ICONS -->
+                <tr>
+                    <td style="padding-bottom: 14px; padding-left: 0px; border-bottom: 1px solid #f1f3f4;">
+                        <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                            <tbody>
+                                <tr>
+                                    <td style="width: 44px; vertical-align: middle;">
+                                        <div style="width: 36px; height: 36px; background: #5865F2; border-radius: 50%; text-align: center; line-height: 38px;">
+                                            <svg width="20" height="15" viewBox="0 0 127.14 96.36" style="vertical-align: middle;"><path fill="#ffffff" d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.79,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.81,11.1,105.25,105.25,0,0,0,32.22-16.15c2.62-27.28-4.48-51.2-19.53-72.15ZM42.45,65.69C36.18,65.69,31,60,31,53s5.18-12.72,11.45-12.72S53.9,46,53.88,53,48.71,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5.18-12.72,11.45-12.72S96.15,46,96.13,53,91,65.69,84.69,65.69Z"/></svg>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <table border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td style="line-height: 18px; vertical-align: baseline;">
+                                                    <span style="font-size: 14px; color: #202124; font-weight: bold; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">Discord</span>
+                                                    <span style="font-size: 12px; color: #5f6368; margin-left: 4px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">&lt;noreply@discord.com&gt;</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="line-height: 16px; vertical-align: baseline; padding-top: 2px;">
+                                                    <span style="font-size: 12px; color: #5f6368; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">to me</span>
+                                                    <span style="font-size: 9px; color: #5f6368; margin-left: 2px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">▼</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td style="text-align: right; vertical-align: middle; white-space: nowrap; color: #5f6368; font-size: 0px;">
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle; margin-left: 8px;" title="Add star">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.7 4.03 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg>
+                                        </span>
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle; margin-left: 8px;" title="Add emoji">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
+                                        </span>
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle; margin-left: 8px;" title="Reply">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>
+                                        </span>
+                                        <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; border-radius: 50%; vertical-align: middle; margin-left: 8px;" title="More">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path fill="#5f6368" d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <!-- YOUR ORIGINAL EMAIL CONTENT WITH SEPARATING GREY BACKGROUND (#f5f6f8) -->
+                <tr>
+                    <td style="padding-top: 12px;">
+                        <table style="background: #f5f6f8; width: 100%; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;" border="0" cellspacing="0" cellpadding="0">
+                          <tbody>
+                            <tr>
+                              <td align="center" style="padding: 15px 0;">
+                                <img style="margin-right: 0px;" src="https://share1.cloudhq-mkt3.net/4f9c2ae99e46c5.png" alt="" width="175" height="48"> 
+                                <br>
+                                <span style="font-size: 8pt; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                                  <strong>Service Notification</strong>
+                                </span>
+                                <!-- CENTRAL CARD WITH VISIBLE WATERMARK SVG BACKGROUND (Opacity 0.15) -->
+                                <table style="width: 600px; max-width: 100%; margin-top: 18px; background-color: #ffffff; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 127.14 96.36%22 width=%22350%22 height=%22350%22><path fill=%22%235865F2%22 opacity=%220.15%22 d=%22M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.79,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.81,11.1,105.25,105.25,0,0,0,32.22-16.15c2.62-27.28-4.48-51.2-19.53-72.15ZM42.45,65.69C36.18,65.69,31,60,31,53s5.18-12.72,11.45-12.72S53.9,46,53.88,53,48.71,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5.18-12.72,11.45-12.72S96.15,46,96.13,53,91,65.69,84.69,65.69Z%22/></svg>'); background-repeat: no-repeat; background-position: center; border: 1px solid #e0e3e7; border-radius: 11px; overflow: hidden; height: 704px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;" border="0" width="600" cellspacing="0" cellpadding="0">
+                                  <tbody>
+                                    <tr style="height: 59px;">
+                                      <td style="background: rgba(255, 240, 240, 0.94); border-bottom: 1px solid #ffd6d6; padding: 13px 16px 14px; height: 59px; width: 566.222px;">
+                                        <div style="font-size: 13px; font-weight: bold; margin-bottom: 7px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                                          <strong style="color: #990000;">
+                                            <span style="font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">PENDING REPORT — Fraudulent</span>
+                                          </strong>
+                                        </div>
+                                        <div style="font-size: 11.5px; line-height: 18px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                                          <span style="color: #666666; font-size: x-small; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">An active enforcement case is associated with this account, and compliance verification is currently pending.&nbsp;Inform reported User and advise them to submit an appeal. Due to the report category selected, they will not receive an automatic notification.</span>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                    <tr style="height: 609px;">
+                                      <td style="padding: 16px; height: 609px; width: 566.222px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                                        <input name="cloudhq_backup_comment_node" type="hidden" value="%20ACCOUNT%20DETAILS%20CARD%20">
+                                        <table style="background: rgba(248, 249, 250, 0.94); border: 1px solid #dfe3e7; border-radius: 9px;" border="0" width="100%" cellspacing="0" cellpadding="0">
+                                          <tbody>
+                                            <tr>
+                                              <td style="padding: 14px;">​ ​
+                                                <table style="width: 100%; height: 113px;" border="0" width="100%" cellspacing="0" cellpadding="0">
+                                                  <tbody>
+                                                    <tr style="height: 113px;">
+                                                      <td style="width: 58.2868%; height: 113px;" valign="top">
+                                                        <div style="color: #617087; font-size: 11px; font-weight: bold; letter-spacing: .6px; margin-bottom: 9px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">ACCOUNT DETAILS</div>
+                                                        <div style="color: #071b30; margin-bottom: 9px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                            <strong>
+                                <span style="font-size: large; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">{{DISPLAY_NAME}}</span>
+                            </strong>
+                        </div>
+                        <div style="font-size: 12px; line-height: 20px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                            <strong style="color: #0b2948; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">Username:</strong>&nbsp; 
+                            <strong>
+                                <span style="color: #38761d; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">&nbsp; &nbsp;&nbsp; 
+                                    <span style="font-size: small; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">{{USERNAME}}</span>
+                                </span>
+                            </strong>
+                        </div>
+                        <div style="font-size: 12px; line-height: 20px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                            <strong style="color: #0b2948; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">User ID:&nbsp;</strong>&nbsp; &nbsp; &nbsp; &nbsp; 
+                            <span style="color: #38761d; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">&nbsp; 
+                                <span style="font-size: small; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                                    <strong>{{ID}}</strong>
+                                </span>
+                            </span>
+                        </div>
+                        <div style="color: #5b6d83; font-size: 12px; line-height: 20px; margin-top: 3px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                            <strong>
+                                <span style="color: #800000; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">Status:</span>
+                            </strong>&nbsp;
+                            <span style="color: #808080; font-size: 13px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">Pending Compliance Verification.</span>
+                        </div>
+                                                      </td>
+                                                      <td style="width: 41.7132%; height: 113px;" align="right" valign="top">
+                                                        <span style="display: inline-block; background: #fff1f1; color: #b42323; border: 1px solid #ffcccc; border-radius: 0px; padding: 5px 13px; font-size: 10px; white-space: nowrap;">
+                                                          <img style="margin-right: 0px;" src="{{PROFILE_PIC}}" alt="image.png" width="81" height="81" data-surl="cid:ii_mtyl3r2c0">​ 
+                                                          <br>
+                                                          <span style="font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                                                            <strong>ALLEGED USER</strong>
+                                                          </span>
+                                                        </span>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                        <input name="cloudhq_backup_comment_node" type="hidden" value="%20SECTION%20TITLE%20">
+                                        <div style="color: #071b30; font-size: 14px; font-weight: bold; margin-top: 18px; margin-bottom: 6px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">The user involved must</div>
+                                        <div style="color: #36516e; font-size: 11.5px; line-height: 18px; margin-bottom: 7px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">The enforcement window will close in approximately&nbsp; 
+                                            <strong>24 hours</strong>.
+                                        </div>
+                                        <input name="cloudhq_backup_comment_node" type="hidden" value="%20NUMBERED%20STEPS%20">
+                                        <table style="font-size: 11.5px; color: #173b60; line-height: 18px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;" border="0" width="100%" cellspacing="0" cellpadding="0">
+                                          <tbody>
+                                            <tr>
+                                              <td style="padding: 2px 7px 3px 0;" valign="top">1.</td>
+                                              <td style="padding: 2px 0 3px 0;">Add the assigned Discord Support through the provided tag to proceed with the verification process.</td>
+                                            </tr>
+                                            <tr>
+                                              <td style="padding: 2px 7px 3px 0;" valign="top">2.</td>
+                                              <td style="padding: 2px 0 3px 0;">Once you have sent the friend request to support, please send a message and provide the relevant case details.</td>
+                                            </tr>
+                                            <tr>
+                                              <td style="padding: 2px 7px 3px 0;" valign="top">3.</td>
+                                              <td style="padding: 2px 0 3px 0;">Contact official support and complete the required verification before the enforcement window ends to avoid further action.</td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                        <table style="margin-top: 16px; background: rgba(255, 241, 241, 0.94); border: 1px solid #ffcccc; border-radius: 8px;" border="0" width="100%" cellspacing="0" cellpadding="0">
+                                          <tbody>
+                                            <tr>
+                                              <td style="padding: 12px 13px;">
+                                                <div style="font-size: 13px; font-weight: bold; margin-bottom: 7px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                                                  <strong>
+                                                    <span style="font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                                                      <span style="color: #990000;">Action Required — Discord Contact Missing</span>
+                                                    </span>
+                                                  </strong>
+                                                </div>
+                                                <div style="font-size: 11px; line-height: 17px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                                                  <span style="color: #666666;">Validation cannot proceed until the assigned Discord Support has been added. Failure to establish contact may result in escalation and automatic enforcement.</span>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                        <input name="cloudhq_backup_comment_node" type="hidden" value="%20ASSIGNED%20CONTACT%20CARD%20">
+                                        <table style="margin-top: 17px; background: rgba(248, 249, 250, 0.94); border: 1px solid #dfe3e7; border-radius: 9px;" border="0" width="100%" cellspacing="0" cellpadding="0">
+                                          <tbody>
+                                            <tr>
+                                              <td style="padding: 14px;">
+                                                <div style="color: #617087; font-size: 11px; letter-spacing: 0.6px; margin-bottom: 9px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                                                  <span style="font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">ASSIGNED CONTACT SUPPORT INFO</span>
+                                                </div>
+                                                <div style="margin-bottom: 5px;">
+                                                  <div style="margin-bottom: 5px;">
+                                                    <span style="color: #666666;">User ID:</span>&nbsp; 
+                                                    <strong>
+                                                      <span style="font-size: large; color: #3d61cc; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">{{QUICK_EDIT_TEXT}}</span>
+                                                    </strong>
+                                                  </div>
+                                                  <div style="color: #3d61cc; font-size: 11px; margin-bottom: 10px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                                                    <span style="color: #6b7280; font-size: 12px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">Official Discord Safety Analyst™</span>
+                                                  </div>
+                                                  <div style="font-size: 12px; line-height: 19px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                                                    <strong style="color: #173b60;">
+                                                      <span style="font-size: 13px; color: #374151; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">Discord Name</span>&nbsp; 
+                                                      <span style="color: #222222; font-size: small;">&nbsp;</span>:&nbsp;
+                                                    </strong>&nbsp;
+                                                    <strong>&nbsp;</strong>&nbsp; &nbsp;&nbsp;
+                                                    <strong>
+                                                      <span style="color: #38761d; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">{{SECOND_TEXT}}</span>
+                                                    </strong>
+                                                  </div>
+                                                </div>
+                                                <input name="cloudhq_backup_comment_node" type="hidden" value="%20BLUE%20BUTTON%20">&nbsp;
+                                                <span style="font-size: 8pt;">
+                                                  <a href="https://discord.com/channels/@me/1456297213033447661" target="_blank" class="cloudHQ__gmail_elements_final_btn" style="background-color: #3d61cc; color: #ffffff; border: 0px solid #000000; border-radius: 3px; box-sizing: border-box; font-weight: bold; line-height: 40px; padding: 12px 24px; text-align: center; text-decoration: none; text-transform: uppercase; vertical-align: middle; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;" rel="noopener">Contact Support</a>
+                                                </span>&nbsp;
+                                                <br>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </td>
+                                    </tr>
+                                    <tr style="height: 36px;">
+                                      <td style="border-top: 1px solid #e0e3e7; padding: 17px 18px 15px; height: 36px; width: 562.222px;">
+                                        <div style="color: #63758a; font-size: 9.5px; line-height: 15px; margin-bottom: 10px; text-align: center; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                                          <strong style="color: #666666; font-size: 10.6667px; text-align: center; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">Account Safety &amp; Review Department&nbsp;</strong>
+                                        </div>
+                                        <div style="line-height: 15px; margin-bottom: 10px; text-align: center; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+                                          <span style="color: #6b7280; font-size: 11px; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">Failure to submit valid proof may result in full suspension within 24 hours of this ticket being filed. This action may proceed automatically if no response is received.</span>&nbsp;
+                                          <span style="color: #63758a; font-size: xx-small;">More information:</span>&nbsp;
+                                          <a href="https://support.discord.com/hc/en-us/articles/4420312247575-Additional-Terms-and-Policies" style="color: #4c5ff1; font-size: 9.5px; text-decoration: none; font-weight: bold; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">Terms of Service</a>&nbsp;
+                                          <span style="color: #63758a; font-size: xx-small;">·</span>&nbsp;
+                                          <a href="https://support.discord.com/hc/en-us/articles/4420312247575-Additional-Terms-and-Policies" style="color: #4c5ff1; font-size: 9.5px; text-decoration: none; font-weight: bold; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">Privacy Policy</a>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                                <br>
+                                <span style="color: #666666; background-color: #f1f2f3; font-size: 8pt; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">Sent by Discord • Check Our Blog •&nbsp; 
+                                  <a href="https://discord.com/" target="_blank" style="color: #5865f2; text-decoration: none; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;" rel="noopener">@discord</a>
+                                </span>&nbsp;
+                                <br style="color: #666666; font-size: 11px; background-color: #f1f2f3;">
+                                <span style="color: #666666; background-color: #f1f2f3; font-size: 8pt; font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">444 De Haro Street, Suite 200, San Francisco, CA 94107</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+`;
+
+    function renderEmail() {
+        let displayName = document.getElementById('displayNameInput').value || "";
+        let username = document.getElementById('usernameInput').value || "";
+        let userId = document.getElementById('userIdInput').value || "";
+        let picUrl = document.getElementById('picLinkInput').value || "";
+        let customText = document.getElementById('quickEdit').value || "";
+        let secondText = document.getElementById('secondInput').value || "";
+
+        let finalHtml = baseTemplate
+            .replace(/{{DISPLAY_NAME}}/g, displayName)
+            .replace(/{{USERNAME}}/g, username)
+            .replace(/{{ID}}/g, userId)
+            .replace(/{{PROFILE_PIC}}/g, picUrl)
+            .replace(/{{QUICK_EDIT_TEXT}}/g, customText)
+            .replace(/{{SECOND_TEXT}}/g, secondText);
+
+        document.getElementById('output').innerHTML = finalHtml;
+    }
+
+    renderEmail();
+
+    // Input handlers for generator
+    document.getElementById('displayNameInput').addEventListener('input', renderEmail);
+    document.getElementById('usernameInput').addEventListener('input', renderEmail);
+    document.getElementById('userIdInput').addEventListener('input', renderEmail);
+    document.getElementById('picLinkInput').addEventListener('input', renderEmail);
+    document.getElementById('quickEdit').addEventListener('input', renderEmail);
+    document.getElementById('secondInput').addEventListener('input', renderEmail);
+
+    // Real Discord Lookup Function Connected to Railway Backend
+    async function triggerLookup() {
+        let idVal = document.getElementById('lookupIdInput').value.trim();
+        let resultBox = document.getElementById('lookupResultContainer');
+        
+        if (!idVal || isNaN(idVal)) {
+            alert("Please enter a valid numeric Discord User ID.");
+            return;
+        }
+
+        try {
+            // REPLACE WITH YOUR RAILWAY APP URL ONCE DEPLOYED
+            let response = await fetch(`automatic-production-f0df.up.railway.app`);
+            
+            if (!response.ok) {
+                alert("User could not be found via Discord API.");
+                return;
+            }
+            
+            let data = await response.json();
+
+            // Show result card container
+            resultBox.style.display = "block";
+
+            // Fill in real profile details from Discord
+            document.getElementById('lookupUsername').innerText = "@" + data.username;
+            document.getElementById('lookupIdDisplay').innerText = data.id;
+            
+            let bioText = data.bio ? data.bio : "Account active • Verified profile details fetched securely.";
+            document.getElementById('lookupBio').innerText = bioText;
+
+            // Build official avatar URL
+            if (data.avatar) {
+                let avatarUrl = `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png?size=128`;
+                document.getElementById('lookupAvatar').src = avatarUrl;
+            } else {
+                document.getElementById('lookupAvatar').src = "https://cdn.discordapp.com/embed/avatars/0.png";
+            }
+
+        } catch (error) {
+            console.error("Lookup failed:", error);
+            alert("Could not connect to the lookup server.");
+        }
+    }
+</script>
+
+</body>
+</html>
